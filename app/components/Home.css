@@ -1,0 +1,55 @@
+.container {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: horizontal;
+  width: 1000px;
+  height: 600px;
+}
+
+.container h2 {
+  font-size: 5rem;
+}
+
+.container a {
+  font-size: 1.4rem;
+}
+
+.container div {
+  border: 1px solid black;
+  padding: 12px;
+}
+.left_column {
+  width: 200px;
+}
+.right_column {
+  flex: 1;
+}
+
+.main_chat {
+}
+
+.thread_item {
+}
+
+.chat_bubble {
+}
+
+.chat_window {
+}
+
+.controls {
+}
+.chat_controls {
+  display: flex;
+  flex-direction: horizontal;
+}
+.chat_input {
+  flex: 1;
+}
+.chat_send {
+  width: 12px;
+  height: 12px;
+}
