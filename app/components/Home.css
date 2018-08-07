@@ -4,7 +4,7 @@
   left: 10px;
   text-align: center;
   display: flex;
-  flex-direction: horizontal;
+  flex-direction: row;
   width: 1000px;
   height: 600px;
 }
@@ -25,7 +25,9 @@
   width: 200px;
 }
 .right_column {
+  display: flex;
   flex: 1;
+  flex-direction: column;
 }
 
 .main_chat {
@@ -34,22 +36,42 @@
 .thread_item {
 }
 
-.chat_bubble {
+.chat_bubble > span {
+  padding: 6px;
+  border-radius: 6px;
+}
+.chat_bubble.theirs {
+  text-align: left;
+}
+.chat_bubble.yours {
+  text-align: right;
+}
+
+.chat_bubble.theirs > span {
+  background-color: lightgrey;
+  color: black;
+}
+.chat_bubble.yours > span {
+  background-color: blue;
+  
+  color: white;
 }
 
 .chat_window {
+  flex: 1;
 }
 
 .controls {
 }
 .chat_controls {
   display: flex;
-  flex-direction: horizontal;
+  flex-direction: row;
+
 }
 .chat_input {
   flex: 1;
 }
 .chat_send {
-  width: 12px;
-  height: 12px;
+  width: 64px;
+  height: 24px;
 }
