@@ -128,7 +128,7 @@ app.on('ready', async () => {
       
       ipcMain.on('markAsRead', (event, args) => {
         console.log("markAsRead");
-         api.markAsRead(args.threadID, (err, data) => {
+         api.markAsRead(args.threadID, args.read, (err, data) => {
           if (err) {
             console.error("markAsRead", err);
             return;

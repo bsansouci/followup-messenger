@@ -64,7 +64,8 @@ export default class Home extends Component<Props> {
     });
 
     ipcRenderer.send('markAsRead', {
-      threadID
+      threadID,
+      read: true
     });
 
     this.setState({
@@ -124,6 +125,22 @@ export default class Home extends Component<Props> {
 
     this.chatInput.value = '';
   };
+  
+  makeAsUnread = () => {
+    ipcRenderer.send('markAsRead', {
+      threadID: this.state.selectedThreadID,
+      read: false
+    });
+    
+    this.setState({
+      threadList: this.state.threadList.map((thread) => 
+        thread.threadID === this.state.selectedThreadID ? {...thread, unreadCount: 1} : thread)
+    })
+  };
+  
+  snooze = () => {
+    console.log("snooze dude snooze");
+  }
 
   scrollToBottom = () => {
     const scrollHeight = this.scrollview.scrollHeight;
@@ -169,6 +186,13 @@ export default class Home extends Component<Props> {
           }
         </div>
         <div className={styles.right_column}>
+          {this.state.selectedThreadID && 
+            <div className={styles.right_column_controls}>
+              <div onClick={this.makeAsUnread} style={{cursor: "pointer"}}>Make as unread</div>
+              {this.state.threadList.filter(({threadID}) => threadID === this.state.selectedThreadID)[0].name}
+              <div onClick={this.snooze} style={{cursor: "pointer"}}>Snooze</div>
+            </div>
+          }
           <div
             className={styles.chat_window}
             ref={el => {

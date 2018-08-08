@@ -31,6 +31,12 @@
   flex: 1;
   flex-direction: column;
 }
+.right_column_controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
 
 .main_chat {
 }
