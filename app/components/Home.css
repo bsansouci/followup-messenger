@@ -23,6 +23,8 @@
 }
 .left_column {
   width: 200px;
+  overflow-y: scroll;
+  text-align: left;
 }
 .right_column {
   display: flex;
@@ -32,10 +34,26 @@
 
 .main_chat {
 }
-
 .thread_item {
+  max-height: 32px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  cursor: pointer;
 }
-
+.thread_item_unread {
+  color: red;
+  border: 2px solid red;
+}
+.thread_item_selected {
+  border: 2px solid black;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+.chat_bubble {
+  max-width: 700px;
+  overflow-x: hidden;
+  line-height: 26px;
+}
 .chat_bubble > span {
   padding: 6px;
   border-radius: 6px;
@@ -59,6 +77,7 @@
 
 .chat_window {
   flex: 1;
+  overflow-y: scroll;
 }
 
 .controls {

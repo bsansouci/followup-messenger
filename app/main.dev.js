@@ -10,8 +10,9 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import MenuBuilder from './menu';
+import fbchat from 'facebook-chat-api';
 
 let mainWindow = null;
 
@@ -67,7 +68,88 @@ app.on('ready', async () => {
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
+  
+  var fuckingGarbage;
+  fbchat({appState: JSON.parse(require('fs').readFileSync('./appstate.json', 'utf8'))}, (err, api) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      fuckingGarbage = api;
+      // require('fs').writeFileSync('appstate.json', JSON.stringify(api.getAppState()));
+      
+      ipcMain.on('getFriendsList', (event) => {
+         api.getFriendsList((err, data) => {
+          if (err) {
+            console.error("getFriendsList", err);
+            return;
+          }
 
+          event.sender.send('getFriendsListResponse', data);
+        });
+      });
+      
+      ipcMain.on('getThreadList', (event) => {
+        console.log("getThreadList");
+         api.getThreadList(20, null, [], (err, data) => {
+          if (err) {
+            console.error("getThreadList", err);
+            return;
+          }
+
+          event.sender.send('getThreadListResponse', data);
+        });
+      });
+      
+      ipcMain.on('getThreadHistory', (event, args) => {
+        console.log("getThreadHistory");
+        api.getThreadHistory(args.threadID, args.amount, args.timestamp, (err, data) => {
+          if (err) {
+            console.error("getThreadHistory", err);
+            return;
+          }
+
+          event.sender.send('getThreadHistoryResponse', data);
+        });
+      });
+      
+      ipcMain.on('sendMessage', (event, args) => {
+        let now = Date.now();
+        console.log("sendMessage", now);
+         api.sendMessage(args.body, args.threadID, (err, data) => {
+          if (err) {
+            console.error("sendMessage", err);
+            return;
+          }
+          console.log("timestamp - now = ", data.timestamp - now);
+          event.sender.send('sendMessageResponse', data);
+        });
+      });
+      
+      ipcMain.on('markAsRead', (event, args) => {
+        console.log("markAsRead");
+         api.markAsRead(args.threadID, (err, data) => {
+          if (err) {
+            console.error("markAsRead", err);
+            return;
+          }
+
+          // event.sender.send('sendMessageResponse', data);
+        });
+      });
+      
+      ipcMain.on('listen', (event, args) => {
+         api.listen((err, data) => {
+          if (err) {
+            console.error("listen", err);
+            return;
+          }
+
+          event.sender.send('message', data);
+        });
+      });
+    });
+  
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
   mainWindow.webContents.on('did-finish-load', () => {
@@ -76,6 +158,10 @@ app.on('ready', async () => {
     }
     mainWindow.show();
     mainWindow.focus();
+    
+    
+    ipcMain.on('test', console.log);
+    mainWindow.webContents.send("message", "hey");
   });
 
   mainWindow.on('closed', () => {

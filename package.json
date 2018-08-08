@@ -209,6 +209,7 @@
     "@fortawesome/fontawesome-free": "^5.2.0",
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
+    "facebook-chat-api": "schmavery/facebook-chat-api",
     "history": "^4.7.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
